@@ -1,5 +1,6 @@
 package model;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -17,7 +18,15 @@ public class Course {
         this.name = name;
         this.teacher = teacher;
         this.maxEnrollment = maxEnrollment;
+        this.studentsEnrolled=new ArrayList<>();
         this.credits=credits;
+    }
+
+    public Course(String name, int maxEnrollment, int credits) {
+        this.name = name;
+        this.maxEnrollment = maxEnrollment;
+        this.credits=credits;
+        this.studentsEnrolled=new ArrayList<>();
     }
 
     public Course(String name, Person teacher, int maxEnrollment, List<Student> studentsEnrolled, int credits) {
@@ -31,6 +40,10 @@ public class Course {
     public Course() {
     }
 
+    public void addStudent(Student student){
+        studentsEnrolled.add(student);
+    }
+
     public String getName() {
         return name;
     }
@@ -41,6 +54,11 @@ public class Course {
 
     public Person getTeacher() {
         return teacher;
+    }
+
+    public String getTeacherName() {
+        if (teacher!=null) return teacher.getFirstName()+'/'+teacher.getLastName();
+        return "null";
     }
 
     public void setTeacher(Person teacher) {
@@ -76,13 +94,13 @@ public class Course {
         if (this==o) return true;
         if (o==null || getClass()!=o.getClass()) return false;
         Course course=(Course) o;
-        return name==course.name && credits==course.credits && Objects.equals(teacher,course.teacher) &&
+        return Objects.equals(name, course.name) && credits==course.credits && Objects.equals(teacher,course.teacher) &&
                 studentsEnrolled==course.studentsEnrolled && maxEnrollment==course.maxEnrollment;
     }
 
 
     @Override
     public String toString(){
-        return "Course { Name:"+ name+", Teacher: "+teacher+", Credits: " + credits+ ", Max Enrollment:" + maxEnrollment+'}';
+        return "Course { Name:"+ name+", Teacher: "+getTeacherName()+", Credits: " + credits+ ", Max Enrollment:" + maxEnrollment+'}';
     }
 }
