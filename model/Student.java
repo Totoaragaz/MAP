@@ -1,5 +1,6 @@
 package model;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -26,6 +27,14 @@ public class Student extends Person{
     public Student() {
     }
 
+    public void addCourse(Course course){
+        this.enrolledCourses.add(course);
+    }
+
+    public void removeCourse(Course course){
+        this.enrolledCourses.remove(course);
+    }
+
     public void setStudentId(long studentId) {
         this.studentId = studentId;
     }
@@ -46,6 +55,13 @@ public class Student extends Person{
         return totalCredits;
     }
 
+    public List<String> getCourseNames() {
+        List<String> courseNames=new ArrayList<>();
+        for (Course i: enrolledCourses)
+            courseNames.add(i.getName());
+        return courseNames;
+    }
+
     public List<Course> getEnrolledCourses() {
         return enrolledCourses;
     }
@@ -55,12 +71,12 @@ public class Student extends Person{
         if (this==o) return true;
         if (o==null || getClass()!=o.getClass()) return false;
         Student student=(Student) o;
-        return studentId==student.studentId && getFirstName()==student.getFirstName() && getLastName()==student.getLastName()
+        return studentId==student.studentId && Objects.equals(getFirstName(), student.getFirstName()) && Objects.equals(getLastName(), student.getLastName())
                 && totalCredits==student.getTotalCredits() && enrolledCourses==student.getEnrolledCourses();
     }
 
     @Override
     public String toString(){
-        return "Student { Name:"+ getFirstName()+"/"+getLastName()+", ID: " + studentId+'}';
+        return "Student { Name:"+ getFirstName()+"/"+getLastName()+", ID: " + studentId+", Kredite: "+ totalCredits+", Courses: "+ getCourseNames()+'}';
     }
 }

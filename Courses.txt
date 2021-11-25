@@ -1,0 +1,6 @@
+MAP.70.6.
+FP.60.6.
+ASC.65.4.
+Datenbanken.70.8.
+Computernetzwerke.50.5.
+WS.60.5.

@@ -2,6 +2,8 @@ package repository;
 
 import model.Course;
 
+import java.util.Objects;
+
 /**
  * Course repository
  */
@@ -14,7 +16,7 @@ public class CourseRepository extends InMemoryRepository<Course>{
     @Override
     public Course update(Course obj) {
         Course courseToUpdate = this.repoList.stream()
-                .filter(course -> course.getName() ==obj.getName())
+                .filter(course -> Objects.equals(course.getName(), obj.getName()))
                 .findFirst()
                 .orElseThrow();
 
