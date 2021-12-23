@@ -245,6 +245,9 @@ public class Kontroller {
             return false;
         }
         studentRepository.closeConnection(connection);
+        Student new_student =findStudent(studentId);
+        new_student.setTotalCredits(findStudent(studentId).getTotalCredits()+findCourse(courseId).getCredits());
+        studentRepository.update(new_student);
         System.out.println("Student wurde erfolgreich angemeldet");
         return true;
     }
