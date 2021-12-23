@@ -14,6 +14,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -84,15 +85,25 @@ public class Kontroller {
     }
 
     /**
+     * returns all courses in a list
+     * @return list of all courses
+     */
+    public List<Course> getAllCourses(){
+        List<Course> courseList=new ArrayList<>();
+        for (Course course: courseRepository.getAll()) {
+            courseList.add(course);
+        }
+        return courseList;
+    }
+
+    /**
      * adds a student to the database
      * @return true if the student was added, false otherwise
      */
     public boolean addStudent(String vorname, String nachname,long id,int credits){
         if (studentRepository.create(new Student(vorname,nachname,id,credits))!=null){
-            System.out.println("Student wurde erfolgreich eingefügt");
             return true;
         }
-        System.out.println("Student wurde nicht eingefügt");
         return false;
     }
 
@@ -102,10 +113,8 @@ public class Kontroller {
      */
     public boolean addTeacher(String vorname, String nachname,long id){
         if (teacherRepository.create(new Teacher(vorname,nachname,id))!=null){
-            System.out.println("Lehrer wurde erfolgreich eingefügt");
             return true;
         }
-        System.out.println("Lehrer wurde nicht eingefügt");
         return false;
     }
 
@@ -115,13 +124,29 @@ public class Kontroller {
      * @return the teacher if found
      */
 
-    public Teacher findTeacher (long teacherId){
+    public Teacher findTeacherById (long teacherId){
         for (Teacher teacher: teacherRepository.getAll()){
             if (teacher.getTeacherId()==teacherId){
                 return teacher;
             }
         }
-        throw new InvalidValue("Invalid TeacherID.");
+        return null;
+    }
+
+    /**
+     * finds the teacher corresponding to a name
+     * @param firstName first name of the teacher
+     * @param lastName last name of the teacher
+     * @return the teacher if found, null otherwise
+     */
+
+    public Teacher findTeacherByName (String firstName, String lastName){
+        for (Teacher teacher: teacherRepository.getAll()){
+            if (teacher.getFirstName().equals(firstName) && teacher.getLastName().equals(lastName)){
+                return teacher;
+            }
+        }
+        return null;
     }
 
     /**
@@ -130,13 +155,29 @@ public class Kontroller {
      * @return the student if found
      */
 
-    public Student findStudent (long studentId){
+    public Student findStudentById (long studentId){
         for (Student student: studentRepository.getAll()){
             if (student.getStudentId()==studentId){
                 return student;
             }
         }
-        throw new InvalidValue("Invalid StudentID.");
+        return null;
+    }
+
+    /**
+     * finds the student corresponding to a name
+     * @param firstName first name of the student
+     * @param lastName last name of the student
+     * @return the student if found, null otherwise
+     */
+
+    public Student findStudentByName (String firstName, String lastName){
+        for (Student student: studentRepository.getAll()){
+            if (student.getFirstName().equals(firstName) && student.getLastName().equals(lastName)){
+                return student;
+            }
+        }
+        return null;
     }
 
     /**
@@ -145,13 +186,13 @@ public class Kontroller {
      * @return the course if found
      */
 
-    public Course findCourse (long courseId){
+    public Course findCourseById (long courseId){
         for (Course course: courseRepository.getAll()){
             if (course.getCourseId()==courseId){
                 return course;
             }
         }
-        throw new InvalidValue("Invalid CourseID.");
+        return null;
     }
 
     /**
@@ -181,7 +222,7 @@ public class Kontroller {
      * @return true if the course was added, false otherwise
      */
     public boolean addCourse(String name,long courseId,long teacherId,int maxEnrollment,int credits){
-        Teacher courseTeacher=findTeacher(teacherId);
+        Teacher courseTeacher=findTeacherById(teacherId);
         if (courseRepository.create(new Course(name,courseId,teacherId,maxEnrollment,credits))!=null) {
             addCourseToTeacher(teacherId,courseId);
             System.out.println("Kurs wurde erfolgreich eingefügt");
@@ -195,7 +236,7 @@ public class Kontroller {
      * deletes a student from the database
      */
     public void deleteStudent(long id){
-        Student student=findStudent(id);
+        Student student=findStudentById(id);
         studentRepository.delete(student);
         System.out.println("Student wurde erfolgreich gelöscht.");
     }
@@ -204,7 +245,7 @@ public class Kontroller {
      * deletes a teacher from the database
      */
     public void deleteTeacher(long id){
-        Teacher teacher=findTeacher(id);
+        Teacher teacher=findTeacherById(id);
         teacherRepository.delete(teacher);
         System.out.println("Lehrer wurde erfolgreich gelöscht.");
     }
@@ -213,7 +254,7 @@ public class Kontroller {
      * deletes a course from the database
      */
     public void deleteCourse(long id){
-        Course course=findCourse(id);
+        Course course=findCourseById(id);
         courseRepository.delete(course);
         System.out.println("Kurs wurde erfolgreich gelöscht.");
     }
@@ -230,11 +271,13 @@ public class Kontroller {
 
     /**
      * registers a student for a course
-     * @return true if student was registered, false otherwise
+     * @return 0 if student cannot be added, 1 if student was added, 2 if the course doesnt have any free places,
+     * 3 if the student has too many credits, 4 if the student is already enrolled for the course
      */
-    public boolean registerStudent(long studentId, long courseId){
-        if (findCourse(courseId).getMaxEnrollment()==findCourse(courseId).getStudentsEnrolled().size()) throw new FullCourse("Kurs hat keine freie Plätze.");
-        if (findStudent(studentId).getTotalCredits()+findCourse(courseId).getCredits()>30) throw new CreditLimit("Student hat zu viele Kredite");
+    public int registerStudent(long studentId, long courseId){
+        if (findCourseById(courseId).getMaxEnrollment()==findCourseById(courseId).getStudentsEnrolled().size()) return 2;
+        if (findStudentById(studentId).getTotalCredits()+findCourseById(courseId).getCredits()>30) return 3;
+        if (findCourseById(courseId).getStudentsEnrolled().contains(studentId)) return 4;
         Connection connection=studentRepository.openConnection();
         String query="insert into enrolledstudents (studentId,courseId) values ("+ studentId +","+ courseId+")";
         try {
@@ -242,31 +285,33 @@ public class Kontroller {
             statement.executeUpdate(query);
         } catch (SQLException e) {
             e.printStackTrace();
-            return false;
+            return 0;
         }
         studentRepository.closeConnection(connection);
-        System.out.println("Student wurde erfolgreich angemeldet");
-        return true;
+        Student new_student =findStudentById(studentId);
+        new_student.setTotalCredits(findStudentById(studentId).getTotalCredits()+findCourseById(courseId).getCredits());
+        studentRepository.update(new_student);
+        return 1;
     }
 
     /**
      * displays the students that are enrolled for a course
      */
-    public void courseStudents(long courseId){
+    public List<Student> courseStudents(long courseId){
+        List<Student> studentList=new ArrayList<>();
         Connection connection=studentRepository.openConnection();
         String query="select * from enrolledstudents where courseId=" +courseId;
         try {
             Statement statement=connection.createStatement();
             ResultSet resultSet=statement.executeQuery(query);
             while (resultSet.next()){
-                System.out.print(resultSet.getLong("studentId"));
+                studentList.add(findStudentById(resultSet.getLong("studentId")));
             }
-            System.out.println();
         } catch (SQLException e) {
             e.printStackTrace();
         }
         studentRepository.closeConnection(connection);
-
+        return studentList;
     }
 
     /**
@@ -325,5 +370,17 @@ public class Kontroller {
                 System.out.println(course);
             }
         }
+    }
+
+    /**
+     * finds the first free StudentId
+     * @return first free StudentId
+     */
+
+    public long firstFreeStudentId(){
+        for (int i=1;i<9999999;i++){
+            if (findStudentById(i)==null) return i;
+        }
+        return -1;
     }
 }

@@ -1,5 +1,7 @@
 package model;
 
+import kontroller.Kontroller;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -96,6 +98,11 @@ public class Course {
         this.credits = credits;
     }
 
+    public String getTeacherName (){
+        Kontroller kontroller=new Kontroller();
+        return kontroller.findTeacherById(teacher).getFirstName() + " " + kontroller.findTeacherById(teacher).getLastName();
+    }
+
     @Override
     public boolean equals(Object o){
         if (this==o) return true;
@@ -108,6 +115,6 @@ public class Course {
 
     @Override
     public String toString(){
-        return "Course { Name: "+ name+ ", Id: " + courseId +", Teacher: " + teacher +", Credits: " + credits+ ", Max Enrollment:" + maxEnrollment+'}';
+        return "Course { Name: "+ name+ ", Teacher: " + getTeacherName() +", Credits: " + credits+ ", Max Enrollment:" + maxEnrollment+'}';
     }
 }

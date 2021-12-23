@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="84.0" prefWidth="314.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <Button fx:id="closeButton" layoutX="133.0" layoutY="42.0" mnemonicParsing="false" onAction="#closeAlertWindow" prefHeight="25.0" prefWidth="48.0" text="Ok" />
+      <Label fx:id="messageLabel" layoutX="13.0" layoutY="14.0" text="Name was not recognized. A new account was created." />
+   </children>
+</AnchorPane>

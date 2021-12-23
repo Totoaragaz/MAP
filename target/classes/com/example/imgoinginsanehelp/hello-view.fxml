@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="351.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.imgoinginsanehelp.JavaFXUIKontroller">
+   <children>
+      <Button fx:id="studentButton" layoutX="55.0" layoutY="146.0" mnemonicParsing="false" onAction="#studentLogIn" prefHeight="107.0" prefWidth="160.0" text="Student">
+         <font>
+            <Font size="30.0" />
+         </font>
+      </Button>
+      <Label layoutX="215.0" layoutY="36.0" text="Welcome">
+         <font>
+            <Font name="Comic Sans MS" size="40.0" />
+         </font>
+      </Label>
+      <Button fx:id="teacherButton" layoutX="384.0" layoutY="146.0" mnemonicParsing="false" onAction="#teacherLogIn" prefHeight="107.0" prefWidth="160.0" text="Teacher">
+         <font>
+            <Font size="30.0" />
+         </font>
+      </Button>
+   </children>
+</AnchorPane>
