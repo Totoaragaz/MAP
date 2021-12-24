@@ -35,9 +35,17 @@ public class StudentUIKontroller {
         this.lastName = lastName;
     }
 
+    /**
+     * updates the credit label
+     */
+
     public void updateCredits(){
         creditLabel.setText(""+student.getTotalCredits());
     }
+
+    /**
+     * initializez the window
+     */
 
     @FXML
     void initialize(){
@@ -73,11 +81,20 @@ public class StudentUIKontroller {
     @FXML
     private Label enrollLabel;
 
+    /**
+     * closes the window
+     */
+
     @FXML
     public void closeStudentWindow (){
         Stage stage=(Stage) studentSignOutButton.getScene().getWindow();
         stage.close();
     }
+
+    /**
+     * shows an alertbox
+     * @throws IOException
+     */
 
     @FXML
     public void showAlertBox () throws IOException {
@@ -92,10 +109,18 @@ public class StudentUIKontroller {
         stage.toFront();
     }
 
+    /**
+     * opens the course choicebox
+     */
+
     @FXML
     public void showChoiceBoxOptions(){
         courseChoiceBox.getItems();
     }
+
+    /**
+     * enrolls student for the course selected in the choice box
+     */
 
     @FXML
     public void enrollForCourse(){

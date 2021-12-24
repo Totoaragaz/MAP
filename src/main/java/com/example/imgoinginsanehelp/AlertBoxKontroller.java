@@ -12,6 +12,11 @@ public class AlertBoxKontroller {
     @FXML
     private Button closeButton;
 
+    /**
+     * sets the message in the alertbox
+     * @param message the message you want to set
+     */
+
     public AlertBoxKontroller(String message) {
         this.message=message;
     }
@@ -23,6 +28,10 @@ public class AlertBoxKontroller {
     void initialize(){
         messageLabel.setText(message);
     }
+
+    /**
+     * closes the alertbox window
+     */
 
     @FXML
     public void closeAlertWindow (){

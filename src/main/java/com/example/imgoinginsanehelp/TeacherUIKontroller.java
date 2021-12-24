@@ -32,6 +32,10 @@ public class TeacherUIKontroller {
         this.lastName = lastName;
     }
 
+    /**
+     * initializes the window
+     */
+
     @FXML
     void initialize(){
         teacherNameLabel.setText(firstName + " " + lastName);
@@ -67,11 +71,21 @@ public class TeacherUIKontroller {
     @FXML
     private Button teacherSignOutButton;
 
+    /**
+     * closes the window
+     * @param event
+     */
+
     @FXML
     void closeTeacherWindow(ActionEvent event) {
         Stage stage=(Stage) teacherSignOutButton.getScene().getWindow();
         stage.close();
     }
+
+    /**
+     * shows an alertbox
+     * @throws IOException
+     */
 
     @FXML
     public void showAlertBox () throws IOException {
@@ -85,6 +99,10 @@ public class TeacherUIKontroller {
         stage.show();
         stage.toFront();
     }
+
+    /**
+     * shows the students for the selected course
+     */
 
     @FXML
     public void showStudents(){

@@ -25,6 +25,11 @@ public class JavaFXUIKontroller {
     @FXML
     private Button logInBackButton;
 
+    /**
+     * shows the main menu
+     * @throws IOException
+     */
+
     @FXML
     public void showMainMenu () throws IOException {
         Stage stage=(Stage) logInBackButton.getScene().getWindow();
@@ -52,6 +57,10 @@ public class JavaFXUIKontroller {
 
     }
 
+    /**
+     * opens the student log in screen
+     */
+
     public void studentLogIn (){
         Stage stage=(Stage) studentButton.getScene().getWindow();
         FXMLLoader fxmlLoader = new FXMLLoader(JavaFXUI.class.getResource("StudentLogIn.fxml"));
@@ -65,6 +74,10 @@ public class JavaFXUIKontroller {
             e.printStackTrace();
         }
     }
+
+    /**
+     * opens the teacher log in screen
+     */
 
     public void teacherLogIn (){
         Stage stage=(Stage) studentButton.getScene().getWindow();
@@ -80,6 +93,11 @@ public class JavaFXUIKontroller {
         }
     }
 
+    /**
+     * signs in as a student
+     * @throws IOException
+     */
+
     @FXML
     public void signInStudent () throws IOException {
         Stage stage=new Stage();
@@ -91,6 +109,11 @@ public class JavaFXUIKontroller {
         stage.setScene(scene);
         stage.show();
     }
+
+    /**
+     * signs in as a teacher
+     * @throws IOException
+     */
 
     @FXML
     public void signInTeacher () throws IOException {
@@ -116,6 +139,11 @@ public class JavaFXUIKontroller {
 
     }
 
+    /**
+     * shows an alertbox if the teacher does not exist
+     * @throws IOException
+     */
+
     @FXML
     public void showAlertBox () throws IOException {
         Stage stage=new Stage();
@@ -128,6 +156,10 @@ public class JavaFXUIKontroller {
         stage.show();
         stage.toFront();
     }
+
+    /**
+     * goes back to the main menu
+     */
 
     public void backToMainMenu (){
         try{
